@@ -1,10 +1,10 @@
-FROM node:9.3 as node
+FROM node:13.8 as node
 
-FROM php:7.2-apache
+FROM php:7.4-apache
 
 # Copy nodejs from node image
 COPY --from=node /usr/local/bin/node /usr/local/bin/node
-COPY --from=node /opt/yarn /opt/yarn
+COPY --from=node /opt /opt
 COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
 COPY --from=node /usr/local/bin /usr/local/bin
 
@@ -17,12 +17,12 @@ RUN set -xe \
     #
     && apt-get update \
     && apt-get install -y git subversion openssh-client coreutils unzip libpq-dev nano \
-    && apt-get install -y autoconf build-essential libpq-dev binutils-gold libgcc1 linux-headers-amd64 make python libpng-dev libjpeg-dev libc-dev libfreetype6-dev libmcrypt-dev libicu-dev sqlite3-pcre libxml2-dev \
-    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+    && apt-get install -y autoconf build-essential libpq-dev binutils-gold libgcc1 linux-headers-amd64 make python libpng-dev libjpeg-dev libc-dev libfreetype6-dev libmcrypt-dev libicu-dev sqlite3-pcre libxml2-dev libonig-dev libzip-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
     #
     # Install Xdebug
     #
-    && pecl install xdebug-2.6.0 \
+    && pecl install xdebug \
     && pecl list-files xdebug |grep src |cut -d ' ' -f 3 > /usr/local/etc/php/conf.d/xdebug.ini \
     #
     # PHP Configuration
