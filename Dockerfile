@@ -17,13 +17,15 @@ RUN set -xe \
     #
     && apt-get update \
     && apt-get install -y git subversion openssh-client coreutils unzip libpq-dev nano \
-    && apt-get install -y autoconf build-essential libpq-dev binutils-gold libgcc1 linux-headers-amd64 make python libpng-dev libjpeg-dev libc-dev libfreetype6-dev libmcrypt-dev libicu-dev sqlite3-pcre libxml2-dev libonig-dev libzip-dev \
+    && apt-get install -y autoconf build-essential libpq-dev binutils-gold libgcc1 linux-headers-amd64 make python libpng-dev libjpeg-dev libc-dev libfreetype6-dev libmcrypt-dev libicu-dev sqlite3-pcre libxml2-dev libonig-dev libzip-dev imagemagick libtool libmagickwand-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     #
-    # Install Xdebug
+    # Install Xdebug and Imagick
     #
     && pecl install xdebug \
     && pecl list-files xdebug |grep src |cut -d ' ' -f 3 > /usr/local/etc/php/conf.d/xdebug.ini \
+    && pecl install imagick \
+    && docker-php-ext-enable imagick \
     #
     # PHP Configuration
     #
