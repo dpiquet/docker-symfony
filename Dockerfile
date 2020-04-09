@@ -56,3 +56,7 @@ RUN set -xe \
     && apt-get clean
 
 EXPOSE 80
+
+# Labelling strategy on child containers build
+ONBUILD ARG FORLABS_IMAGE_CONTEXT='production'
+ONBUILD LABEL fr.forlabs.image_context="${FORLABS_IMAGE_CONTEXT}"
